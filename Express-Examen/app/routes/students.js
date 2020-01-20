@@ -9,11 +9,21 @@ MongoClient.connect('mongodb://localhost:27017', (err, database) => {
     db = database.db('exam');
 })
 
-// personen tonen
+// studenten tonen
 router.get('/', (req, res) => {
     db.collection('students').find().toArray((err, result) => {
         if(err) return console.log(err);
         res.render('list.ejs', {students: result});
     })
+})
+
+// student toevoegen
+router.get('/add/', (req, res) => {
+    res.render('add.ejs');
+})
+
+router.post('/add',(req, res) =>{
+    db.collection('students').insertOne(req.body);
+    res.redirect('/students');
 })
 module.exports = router;
